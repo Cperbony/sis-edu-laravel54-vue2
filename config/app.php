@@ -229,8 +229,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'FormBuilder' => \Kris\LaravelFormBuilder\Facades\FormBuilder::class,
         //BOOTSTRAPPER
-        'Table' => 'Bootstrapper\Facades\Table',
-        'Button' => 'Bootstrapper\Facades\Button',
+//        'Table' => 'Bootstrapper\Facades\Table',
+//        'Button' => 'Bootstrapper\Facades\Button',
 
     ],
 
