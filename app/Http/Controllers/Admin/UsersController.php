@@ -57,7 +57,7 @@ class UsersController extends Controller
         $data['password'] = $password;
         /** @var \FormBuilder $data */
         User::create($data);
-        $request->session()->flash('message', "Usuário criado cm sucesso");
+        session()->flash('message', "Usuário criado cm sucesso");
 
         return redirect()->route('admin.users.index');
     }
