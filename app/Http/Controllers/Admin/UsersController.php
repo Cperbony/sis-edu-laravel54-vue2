@@ -55,7 +55,9 @@ class UsersController extends Controller
         $data = $form->getFieldValues();
         $password = str_random(6);
         $data['password'] = $password;
+        /** @var \FormBuilder $data */
         User::create($data);
+        $request->session()->flash('message', "Usuário criado cm sucesso");
 
         return redirect()->route('admin.users.index');
     }
@@ -68,7 +70,7 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -79,19 +81,39 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $form = \FormBuilder::create(UserForm::class, [
+            'url' => route('admin.users.update', ['user' => $user->id]),
+            'method' => 'PUT',
+            'model' => $user
+
+        ]);
+        return view('admin.users.edit', compact('form'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
      * @param  \CAP\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(User $user)
     {
-        //
+        $form = \FormBuilder::create(UserForm::class, [
+            'data' => ['id' => $user->id]
+        ]);
+
+        if (!$form->isValid()) {
+            return redirect()
+                ->back()
+                ->withErrors($form->getErrors())
+                ->withInput();
+        }
+        $data = $form->getFieldValues();
+        $user->update($data);
+        session()->flash('message', 'Usuário editado com Sucesso');
+
+        return redirect()->route('admin.users.index');
+
     }
 
     /**
@@ -99,9 +121,12 @@ class UsersController extends Controller
      *
      * @param  \CAP\Models\User $user
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        session()->flash('message', 'Usuário excluído com Sucesso');
+        return redirect()->route('admin.users.index');
     }
 }

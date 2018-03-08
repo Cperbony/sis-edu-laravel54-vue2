@@ -22,6 +22,9 @@ Route::prefix('admin')->group(function () {
         'as' => 'admin.',
         'middleware' => 'auth'
     ], function () {
+        Route::name('dashboard')->get('/dashboard', function () {
+          return "Estou na Dashboard";
+        });
         Route::resource('users', 'UsersController');
     });
 });
