@@ -53,11 +53,12 @@ class UsersController extends Controller
                 ->withInput();
         }
         $data = $form->getFieldValues();
-        $password = str_random(6);
-        $data['password'] = $password;
-        /** @var \FormBuilder $data */
-        User::create($data);
-        session()->flash('message', "Usuário criado cm sucesso");
+        User::createFully($data);
+//        $password = str_random(6);
+//        $data['password'] = $password;
+//        /** @var \FormBuilder $data */
+//        User::create($data);
+        $request->session()->flash('message', "Usuário criado com sucesso");
 
         return redirect()->route('admin.users.index');
     }
