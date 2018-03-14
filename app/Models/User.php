@@ -34,6 +34,14 @@ class User extends Authenticatable implements TableInterface
     ];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function userable()
+    {
+        return $this->morphTo();
+    }
+
+    /**
      * @param $data
      * @return $this|\Illuminate\Database\Eloquent\Model
      */
@@ -44,7 +52,7 @@ class User extends Authenticatable implements TableInterface
         $user = parent::create($data + ['enrolment' => str_random(6)]);
         self::assignEnrolment($user, self::ROLE_ADMIN);
         $user->save();
-        if(isset($data['send_mail'])){
+        if (isset($data['send_mail'])) {
             $token = \Password::broker()->createToken($user);
             /** @var User $user */
             $user->notify(new UserCreated($token));
